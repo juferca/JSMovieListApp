@@ -25,7 +25,7 @@ class UI {
 
     const movies = StoredMovies;
 
-    movies.forEach((movie) => {UI.addMovieToList(movie)});
+    movies.forEach((movie) => UI.addMovieToList(movie));
   }
 
   static addMovieToList(movie) {
@@ -42,6 +42,12 @@ class UI {
 
     list.appendChild(row);
   }
+
+  static clearFields() {
+    document.querySelector('#title').value = '';
+    document.querySelector('#release-date').value = '';
+    document.querySelector('#sku').value = '';
+  }
 }
 
 // Store Class: Handles storage (Local storage within the browser, doesn't go away until it is cleared)
@@ -50,6 +56,26 @@ class UI {
 document.addEventListener('DOMContentLoaded', UI.displayMovies);
 
 // Event: Add a Movie
+document.querySelector('#movie-form').addEventListener('submit', (e) => {
+  // Prevent actual submit
+  e.preventDefault();
 
+  // Get form values
+  const title = document.querySelector('#title').value;
+  const releaseDate = document.querySelector('#release-date').value;
+  const sku = document.querySelector('#sku').value;
+
+  // Instantiated Movie
+  const movie = new Movie(title, releaseDate, sku);
+
+  // Add Movie to UI
+  UI.addMovieToList(movie);
+
+  // Clear fields
+  UI.clearFields();
+
+});
 
 // Event: Remove a Movie
+
+// Stopped at 25:00
