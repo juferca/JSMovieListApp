@@ -43,6 +43,12 @@ class UI {
     list.appendChild(row);
   }
 
+  static deleteMovie(el) {
+    if(el.classList.contains('delete')) {
+      el.parentElement.parentElement.remove();
+    }
+  }
+
   static clearFields() {
     document.querySelector('#title').value = '';
     document.querySelector('#release-date').value = '';
@@ -77,5 +83,6 @@ document.querySelector('#movie-form').addEventListener('submit', (e) => {
 });
 
 // Event: Remove a Movie
-
-// Stopped at 25:00
+document.querySelector('#movie-list').addEventListener('click', (e) => {
+  UI.deleteMovie(e.target)
+});
