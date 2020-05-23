@@ -49,6 +49,18 @@ class UI {
     }
   }
 
+  static showAlert(message, className) {
+    const div = document.createElement('div');
+    div.className = `alert alert-${className}`;
+    div.appendChild(document.createTextNode(message));
+    const container = document.querySelector('.container');
+    const form = document.querySelector('#movie-form');
+    container.insertBefore(div, form);
+
+    // Vanish in 2 seconds
+    setTimeout(() => document.querySelector('.alert').remove(), 2000);
+  }
+
   static clearFields() {
     document.querySelector('#title').value = '';
     document.querySelector('#release-date').value = '';
@@ -63,6 +75,7 @@ document.addEventListener('DOMContentLoaded', UI.displayMovies);
 
 // Event: Add a Movie
 document.querySelector('#movie-form').addEventListener('submit', (e) => {
+
   // Prevent actual submit
   e.preventDefault();
 
@@ -71,18 +84,29 @@ document.querySelector('#movie-form').addEventListener('submit', (e) => {
   const releaseDate = document.querySelector('#release-date').value;
   const sku = document.querySelector('#sku').value;
 
-  // Instantiated Movie
-  const movie = new Movie(title, releaseDate, sku);
+  // Validate
+  if(title === '' || releaseDate === '' || sku === '') {
+    UI.showAlert('Please fill in all the fields', 'danger');
+  } else {
 
-  // Add Movie to UI
-  UI.addMovieToList(movie);
+    // Instantiated Movie
+    const movie = new Movie(title, releaseDate, sku);
 
-  // Clear fields
-  UI.clearFields();
+    // Add Movie to UI
+    UI.addMovieToList(movie);
 
+    // Show success message
+    UI.showAlert('Book Added', 'success');
+
+    // Clear fields
+    UI.clearFields();
+  }
 });
 
 // Event: Remove a Movie
 document.querySelector('#movie-list').addEventListener('click', (e) => {
-  UI.deleteMovie(e.target)
+  UI.deleteMovie(e.target);
+
+  // Show success message
+  UI.showAlert('Book Removed', 'success');
 });
